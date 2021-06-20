@@ -9,7 +9,7 @@ import { getUser } from './users/users.utils';
 
 // .env에서 포트번호 바꾼거 적용
 const PORT = process.env.PORT;
-const server = new ApolloServer({
+const apollo = new ApolloServer({
 	resolvers,
 	typeDefs,
 	context: async ({ req }) => {
@@ -22,7 +22,8 @@ const server = new ApolloServer({
 
 const app = express();
 app.use(logger('tiny'));
-server.applyMiddleware({ app });
+app.use('/static', express.static('uploads'));
+apollo.applyMiddleware({ app });
 app.listen({ port: PORT }, () => {
 	console.log(`👑 Server is running on http://localhost:${PORT}/`);
 });

@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Resolvers } from '../../types';
 
 const resolvers: Resolvers = {
@@ -18,7 +18,7 @@ const resolvers: Resolvers = {
 					throw new Error('username or email ia already taken.');
 				}
 
-				return client.user.create({
+				await client.user.create({
 					data: {
 						username,
 						email,
@@ -27,8 +27,14 @@ const resolvers: Resolvers = {
 						password: uglyPasswrod,
 					},
 				});
+				return {
+					ok: true,
+				};
 			} catch (error) {
-				return error;
+				return {
+					ok: false,
+					error: 'Cant create account.',
+				};
 			}
 		},
 	},

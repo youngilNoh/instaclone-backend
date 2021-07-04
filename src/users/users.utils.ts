@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import client from '../client';
-import { Resolver, Resolvers } from '../types';
+import { Resolver } from '../types';
 
 export const getUser = async (token) => {
 	try {
@@ -22,20 +22,8 @@ export const getUser = async (token) => {
 	}
 };
 
-// export const protectedResolver =
-// 	(ourResolver: Resolver) => (root, args, context, info) => {
-// 		if (!context.loggedInUser) {
-// 			return {
-// 				ok: false,
-// 				error: 'Please login to perform this action.',
-// 			};
-// 		}
-
-// 		return ourResolver(root, args, context, info);
-// 	};
-
-export function protectedResolver(ourResolver) {
-	return function (root, args, context, info) {
+export const protectedResolver =
+	(ourResolver: Resolver) => (root, args, context, info) => {
 		if (!context.loggedInUser) {
 			return {
 				ok: false,
@@ -45,4 +33,3 @@ export function protectedResolver(ourResolver) {
 
 		return ourResolver(root, args, context, info);
 	};
-}

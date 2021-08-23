@@ -24,7 +24,7 @@ const resolversFn = async (_, { id, caption }, { loggedInUser }) => {
 			error: 'Photo not found.',
 		};
 	}
-	const photo = await client.photo.update({
+	await client.photo.update({
 		where: {
 			id,
 		},
@@ -37,7 +37,9 @@ const resolversFn = async (_, { id, caption }, { loggedInUser }) => {
 		},
 	});
 
-	console.log(photo);
+	return {
+		ok: true,
+	};
 };
 
 const resolvers: Resolvers = {

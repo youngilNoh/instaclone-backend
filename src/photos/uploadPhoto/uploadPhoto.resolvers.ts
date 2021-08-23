@@ -1,14 +1,11 @@
 import { Resolvers } from '../../types';
 import { protectedResolver } from '../../users/users.utils';
+import { processHashtags } from '../photos.utils';
 
 const resolversFn = async (_, { file, caption }, { loggedInUser, client }) => {
 	let hashtagObj = null;
 	if (caption) {
-		const hashtags = caption.match(/#[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|\u0E00-\u0E7F|\w]+/g);
-		hashtagObj = hashtags?.map((hashtag) => ({
-			where: { hashtag },
-			create: { hashtag },
-		}));
+		hashtagObj = processHashtags(caption);
 	}
 	return client.photo.create({
 		data: {
